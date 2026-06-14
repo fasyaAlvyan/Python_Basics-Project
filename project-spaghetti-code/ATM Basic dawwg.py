@@ -41,6 +41,7 @@ while True:
                         elif menu_input == 3:
                             try:
                                 tarik = int(input("Masukkan nilai yang ingin ditarik : "))
+                                Saldo -= tarik
                             except ValueError:
                                 print("Masukkan nilai yang benar")
                             while tarik > Saldo:
@@ -52,10 +53,8 @@ while True:
                                     except ValueError:
                                         print("Masukkan nilai yang benar")
                                 else:
-                                    Saldo -= tarik
                                     print(f"Saldo anda menjadi : Rp.{Saldo:,} ")
                                     riwayat.append(f"Anda menarik saldo, nilai : Rp.{tarik:,}")
-                            Saldo -= tarik
                             print(f"Saldo anda menjadi {Saldo:,}")
                             riwayat.append(f"Anda menarik saldo, nilai : Rp.{tarik:,}")
                         elif menu_input == 4:

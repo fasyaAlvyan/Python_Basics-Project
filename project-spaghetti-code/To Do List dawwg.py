@@ -1,10 +1,12 @@
+import random as rd
 Menu = """1. Tambah tugas
 2. Lihat semua tugas
 3. Tandai tugas selesai
 4. Hapus tugas
 5. Keluar"""
-tugas = {1:{}}
-nomor_tugas = 1 #Saya menggunakan metode ini untuk penomoran tugas, karena jika menggunakan enumerate akan rumit dan saya belum bisa
+
+tugas = {0:{}}
+nomor_tugas = 0
 kategori = ["Tinggi","Sedang","Rendah"]
 error_message1 = "[Masukkan Angka Yang Valid]"
 error_message2 = "[Masukkan Angka]"
@@ -23,9 +25,11 @@ while True:
                     while True:
                         prioritas_tugas = input("Masukkan prioritas Tugas (Tinggi/Sedang/Rendah) >> ").capitalize()
                         if prioritas_tugas in kategori:
+                            random_nomor = rd.randint(1,100000)
                             tugas.update({nomor_tugas:{"Nama Tugas":nama_tugas, "Prioritas":prioritas_tugas, "Status":"belum"}})
-                            nomor_tugas += 1
+                            nomor_tugas += random_nomor
                             print("[Tugas Berhasil Ditambahkan]")
+                            
                             break
                         else:
                             print("[Masukkan prioritas tugas berdasarkan kategori yang tersedia]")
@@ -40,10 +44,19 @@ while True:
         elif Choose_menu == 2:
             while True:
                 try:
-                    for number,value in tugas.items():
-                        print(f"[{number}] {value["Nama Tugas"]} | Prioritas : {value["Prioritas"]} | Status : {value["Status"]}") # sedikit saya ubah untuk menu 2 karena menggunakan nested dictionary
+                    if len(tugas) == 0:
+                        print("[Tugas Kosong]")
+                        confirm4 = input("Tekan 'q' untuk keluar >> ").lower()
+                        if confirm4 == "q":
+                            print(exit_message)
+                            break
+                        else:
+                            break
+                    else:
+                        for number,value in tugas.items():
+                            print(f"[{number}] {value["Nama Tugas"]} | Prioritas : {value["Prioritas"]} | Status : {value["Status"]}") # sedikit saya ubah untuk menu 2 karena menggunakan nested dictionary
                 except KeyError:
-                    print("Tugas kosong")
+                    print("[Tugas kosong]")
                 confirm1 = input("Tekan 'q' untuk keluar >> ")
                 if confirm1 == "q":
                     print(exit_message)
@@ -54,19 +67,28 @@ while True:
                         for key_dict,value_dict in tugas.items():
                             print(f"Nomor : {key_dict} | Tugas : {value_dict["Nama Tugas"]} | Status : {value_dict["Status"]}")
                         try:
-                            tugas_selesai = int(input("Masukkan nomor tugas yang ingin ditandai >> "))
-                            if tugas_selesai in tugas:
-                                tugas[tugas_selesai].update({"Status":"selesai"})
-                                print("[Tugas Telah Ditandai Selesai Dan Tidak Perlu Ditandai Lagi]")
+                            if len(tugas) == 0:
+                                print("[Tugas Kosong]")
+                                confirm4 = input("Tekan 'q' untuk keluar >> ").lower()
+                                if confirm4 == "q":
+                                    print(exit_message)
+                                    break
+                                else:
+                                    break
                             else:
-                                print(error_message1)
-                                continue
-                            confirm3 = input("Tekan 'q' untuk keluar atau tekan apapun untuk lanjut menandai >> ").lower()
-                            if confirm3 == "q":
-                                print(exit_message)
-                                break
-                            else:
-                                continue
+                                tugas_selesai = int(input("Masukkan ID tugas yang ingin ditandai >> "))
+                                if tugas_selesai in tugas:
+                                    tugas[tugas_selesai].update({"Status":"selesai"})
+                                    print("[Tugas Telah Ditandai Selesai Dan Tidak Perlu Ditandai Lagi]")
+                                else:
+                                    print(error_message1)
+                                    continue
+                                confirm3 = input("Tekan 'q' untuk keluar atau tekan apapun untuk lanjut menandai >> ").lower()
+                                if confirm3 == "q":
+                                    print(exit_message)
+                                    break
+                                else:
+                                    continue
                         except ValueError:
                             print(error_message2)
                     except KeyError:
@@ -83,19 +105,29 @@ while True:
                     for key_dict1,value_dict1 in tugas.items():
                         print(f"Nomor : {key_dict1} | Tugas : {value_dict1["Nama Tugas"]} | Status : {value_dict1["Status"]}")
                     try:
-                        tugas_hapus = int(input("Masukkan nomor tugas yang ingin dihapus >> "))
-                        if tugas_hapus in tugas:
-                            tugas.pop(tugas_hapus)
-                            print("[Tugas Berhasil dihapus]")
+                        if len(tugas) == 0:
+                            print("[Tugas Kosong]")
+                            confirm4 = input("Tekan 'q' untuk keluar >> ").lower()
+                            if confirm4 == "q":
+                                print(exit_message)
+                                break
+                            else:
+                                break
                         else:
-                            print(error_message1)
-                            continue
-                        confirm4 = input("Tekan 'q' untuk keluar atau tekan apapun untuk lanjut menghapus >> ").lower()
-                        if confirm4 == "q":
-                            print(exit_message)
-                            break
-                        else:
-                            continue
+                            tugas_hapus = int(input("Masukkan nomor tugas yang ingin dihapus >> "))
+                            if tugas_hapus in tugas:
+                                tugas.pop(tugas_hapus)
+                                print("[Tugas Berhasil dihapus]")
+                            else:
+                                print(error_message1)
+                                continue
+                            confirm4 = input("Tekan 'q' untuk keluar atau tekan apapun untuk lanjut menghapus >> ").lower()
+                            if confirm4 == "q":
+                                print(exit_message)
+                                break
+                            elif confirm4 == "":
+                                # if tugas 
+                                continue
                     except ValueError:
                         print(error_message2)
                 except KeyError:
